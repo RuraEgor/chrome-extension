@@ -43,8 +43,13 @@ if (butSend) {
 	butSend.addEventListener('click', function () {
 		
 		masData['name'] = document.getElementById('name').value;
-		masData['group'] = document.getElementById('select').value;
+		// masData['group'] = document.getElementById('select').value;
+		
+		let $elemSel = document.getElementById('select');
+		masData['group'] = $elemSel.options[$elemSel.selectedIndex].value;
+		
 		masData['links'] = document.getElementById('link').value;
+		
 		masData['background'] = document.getElementById('background').value;
 		
 		masData['choise'] = document.getElementById('choise_back').checked ? 1 : 0;
@@ -66,12 +71,13 @@ function getXhrObject(){
 	return new XMLHttpRequest();
 }
 
+
 //=====  FILL THE SELECT
 function fillSel (data) {
 	let select = document.getElementById('select');
-	
-	data.forEach(function (n) {
+	data['name'].forEach(function (n, i) {
 		let selOpot = document.createElement('option');
+		selOpot.setAttribute('value', data['id'][i]);
 		selOpot.innerHTML = n;
 		if (selOpot && select) select.appendChild(selOpot);
 	});
@@ -93,7 +99,7 @@ function ajaxTake() {
 	xhr.onreadystatechange = function() {
 		if(xhr.readyState === 4 && xhr.status === 200){
 			let con = JSON.parse(xhr.responseText);
-			fillSel(con['name']);
+			fillSel(con);
 		}
 	}
 	xhr.send(params.join('&'));
@@ -144,9 +150,9 @@ function takeScreen() {
 		params.push(key + '=' + masData[key]);
 	}
 	
-	// let urlScreen = 'http://localhost/ajax-ex/screenIcon.php.php';
-	// let urlScreen = 'http://ron17.h19.ru/ex/ajax-ex/screenIcon.php.php';
-	let urlScreen = 'http://ruraeghw.beget.tech/ajax-ex/screenIcon.php.php';
+	// let urlScreen = 'http://localhost/ajax-ex/screenIcon.php';
+	// let urlScreen = 'http://ron17.h19.ru/ex/ajax-ex/screenIcon.php';
+	let urlScreen = 'http://ruraeghw.beget.tech/ajax-ex/screenIcon.php';
 	
 	let xhr = getXhrObject();
 	xhr.open('POST', urlScreen, true);
